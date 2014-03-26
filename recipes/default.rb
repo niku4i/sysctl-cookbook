@@ -10,9 +10,12 @@
 template "/etc/sysctl.conf" do
   action :create
   source 'sysctl.conf.erb'
+  notifies :run, "execute[sysctl -p /etc/sysctl.conf]"
   only_if do
     node['sysctl']['params'] && !node['sysctl']['params'].empty?
   end
 end
 
-execute "sysctl -p /etc/sysctl.conf"
+execute "sysctl -p /etc/sysctl.conf" do
+  action :nothing # means run only when another resource notifies it
+end
