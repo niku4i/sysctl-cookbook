@@ -1,0 +1,24 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-6.5
+
+suites:
+  - name: default
+    run_list:
+      - recipe[sysctl::default]
+    attributes:
+      sysctl:
+        params:
+          net.core.somaxconn: 256
+          net.ipv4.udp_mem: [ 11111, 22222, 33333 ]
+          vm.numa_zonelist_order: "default"
+          net:
+            ipv4:
+              route:
+                gc_thresh: 2468
